@@ -16,6 +16,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatInputModule } from '@angular/material/input';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { MatTab, MatTabsModule } from '@angular/material/tabs';
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     MatSidenavModule,
     MatListModule,
     MatInputModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatTabsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
