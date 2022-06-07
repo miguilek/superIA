@@ -1,0 +1,60 @@
+<div class="row login">
+    <div class="col-6 login_side">
+        <div class="row h-50">
+            <div class="col text-center">
+                <h1 class="login_title">SuperIA</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-center">
+                <img class="login_logo mt-5" src="assets/brainicon.svg"/>
+            </div>
+        </div>
+    </div>
+    <div class="col-1"></div>
+    <div class="col-4">
+        <div class="login_form">
+            <div>
+                <div class="row">
+                    <div class="col">
+                        <h1 class="mb-5">Iniciar sesión</h1>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <mat-form-field class="login_field" appearance="fill">
+                            <mat-label>Usuario</mat-label>
+                            <input type="text" matInput [formControl]="emailFormControl">
+                            <button *ngIf="emailFormControl" matSuffix mat-icon-button>
+                                <mat-icon>close</mat-icon>
+                            </button>
+                            <mat-error *ngIf="emailFormControl.hasError('required')">
+                              Introduce tu <strong>usuario</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <mat-form-field class="login_field" appearance="fill">
+                            <mat-label>Contraseña</mat-label>
+                            <input type="email" matInput [formControl]="emailFormControl">
+                            <button *ngIf="emailFormControl" matSuffix mat-icon-button>
+                                <mat-icon>close</mat-icon>
+                            </button>
+                            <mat-error *ngIf="emailFormControl.hasError('required')">
+                              Introduce tu <strong>contraseña</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>          
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <button mat-raised-button color="primary" (click)="logIn()">Acceder</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-1"></div>
+</div>

@@ -1,0 +1,75 @@
+<div *ngIf="loggedIn">
+
+<header>
+  <mat-toolbar color="primary">
+    <mat-toolbar-row class="mat-elevation-z10">
+      <img class="logo_header" src="assets/brainicon.svg"/>
+      <span class="mar-1"></span>
+      <span style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">SuperIA</span>
+    </mat-toolbar-row>
+    <mat-toolbar-row>
+      <button (click)="drawer.toggle()" mat-icon-button aria-label="Example icon-button with menu icon">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="spacer-x"></span>
+      <button (click)="logOut()" mat-icon-button aria-label="Example icon-button with menu icon">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+</header>
+
+<mat-drawer-container class="example-container" [hasBackdrop]="true">
+  <mat-drawer #drawer mode="over" class="drawer">
+    <mat-list>
+      <div mat-subheader>Servicios</div>
+      <mat-list-item>
+        <mat-icon mat-list-icon>keyboard_arrow_right</mat-icon>
+        <div mat-line>Listado</div>
+      </mat-list-item>
+      <mat-list-item>
+        <mat-icon mat-list-icon>keyboard_arrow_right</mat-icon>
+        <div mat-line>Crear</div>
+      </mat-list-item>
+      <mat-list-item>
+        <mat-icon mat-list-icon>keyboard_arrow_right</mat-icon>
+        <div mat-line>API</div>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+      <div mat-subheader>Usuarios</div>
+      <mat-list-item>
+        <mat-icon mat-list-icon>keyboard_arrow_right</mat-icon>
+        <div mat-line>Listado</div>
+      </mat-list-item>
+      <mat-list-item>
+        <mat-icon mat-list-icon>keyboard_arrow_right</mat-icon>
+        <div mat-line>Gestión</div>
+      </mat-list-item>
+    </mat-list>  
+  </mat-drawer>
+  <mat-drawer-content>
+
+    <router-outlet></router-outlet>
+
+    <footer class="footer">
+      <mat-toolbar color="primary">
+        <mat-toolbar-row class="mat-elevation-z10">
+          <img class="logo_header" src="assets/brainicon.svg"/>
+          <span class="mar-1"></span>
+          <span style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">SuperIA</span>
+          <span class="spacer-x"></span>
+          <span class="text_light">Terms and conditions</span>
+          <span class="spacer-x"></span>
+          <span class="text_light">FAQ</span>
+          <span class="spacer-x"></span>
+          <span class="text_light m-5">Privacy policy</span>
+        </mat-toolbar-row>
+      </mat-toolbar>  
+    </footer>
+
+  </mat-drawer-content>
+</mat-drawer-container>
+
+</div>
+
+<router-outlet *ngIf="!loggedIn"></router-outlet>
