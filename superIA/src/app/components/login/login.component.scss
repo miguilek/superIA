@@ -1,5 +1,5 @@
 .login {
-    height: 100%;
+    height: 100vh;
 }
 
 .login_side {
@@ -9,13 +9,15 @@ background: linear-gradient(180deg, rgba(2,0,36,1) 0%, rgba(18,18,84,1) 0%, rgba
 
 .login_logo {
     width: 60%;
+    position: float;
 }
 
 .login_title {
     color: white;
-    font-size: xx-large;
-
-    margin-top: 30%;
+    font-size: xxx-large;
+    font-weight: 1000;
+    font-family: 'Courier New', Courier, monospace;
+    margin-top: 50%;
 }
 
 .login_field {
