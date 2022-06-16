@@ -82,11 +82,16 @@ function main() {
   const app = express(); // Export app for other routes to use
   const handlers = new HandlerGenerator();
   const port = process.env.PORT || 8000;
+  
+  const distDir = __dirname + "/dist/";
+  app.use(express.static(distDir));
+
   app.use(bodyParser.urlencoded({ // Middleware
     extended: true
   }));
   app.use(cors());
   app.use(bodyParser.json());
+  
   // Routes & Handlers
   app.post('/users/authenticate', handlers.login);
   app.get('/posts', middleware.checkToken, handlers.getAllPosts);
@@ -94,6 +99,12 @@ function main() {
   app.post('/posts', middleware.checkToken, handlers.createPost);
   app.put('/posts/:id', middleware.checkToken, handlers.updatePost);
   app.delete('/posts/:id', middleware.checkToken, handlers.deletePost);
+
+  // Habilitar la navegacion por URL devolver static index.html
+  app.all('*', (req, res) => {
+    res.sendFile(distDir + '/index.html');
+  });
+
   app.listen(port, () => console.log(`Server is listening on port: ${port}`));
 }
 
