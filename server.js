@@ -10,31 +10,52 @@ const user = { id: 1, username: 'test', password: 'test', firstName: 'Test', las
 
 class HandlerGenerator {
   login(req, res) {
-    const username = req.body.username;
-    const password = req.body.password;
+    const username = req.body.username,
+          password = req.body.password;
 
-    if (username && password) {
-      if (username === user.username && password === user.password) {
-        let token = jwt.sign({ username: username },
-          config.secret,
-          {
-            expiresIn: '24h' // expires in 24 hours
-          }
-        );
-        // return the JWT token for the future API calls
-        res.json({
-          token: token,
-          ...user
-        });
-      } else {
-        res.status(403).json({
-          message: 'Incorrect username or password'
-        });
-      }
-    } else {
-      res.status(400).json({
-        message: 'Authentication failed! Please check the request'
+    // if (username && password) {
+    //   if (username === user.username && password === user.password) {
+    //     let token = jwt.sign({ username: username },
+    //       config.secret,
+    //       {
+    //         expiresIn: '24h' // expires in 24 hours
+    //       }
+    //     );
+    //     // return the JWT token for the future API calls
+    //     res.json({
+    //       token: token,
+    //       ...user
+    //     });
+    //   } else {
+    //     res.status(403).json({
+    //       message: 'Incorrect username or password'
+    //     });
+    //   }
+    // } else {
+    //   res.status(400).json({
+    //     message: 'Authentication failed! Please check the request'
+    //   });
+    // }
+
+    if (validateEmailAndPassword()) {
+      const userId = findUserIdForEmail(username);
+
+      const jwtBearerToken = jwt.sign({}, RSA_PRIVATE_KEY, {
+              algorithm: 'RS256',
+              expiresIn: 120,
+              subject: userId
       });
+
+      // send the JWT back to the user
+      // TODO - multiple options available     
+      res.status(200).json({
+        idToken: jwtBearerToken,
+        expiresIn: ...
+      })              ;           
+    }
+    else {
+        // send status 401 Unauthorized
+        res.sendStatus(401); 
     }
   }
   getAllPosts(req, res) {
