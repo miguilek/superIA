@@ -1,4 +1,4 @@
-import { AfterContentInit, AfterViewInit, Component, OnInit, SimpleChanges } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from './services/auth.service';
 
@@ -7,42 +7,29 @@ import { AuthService } from './services/auth.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit{
+export class AppComponent {
   title = 'superIA';
   showFiller = false;
   user: any;
-  loggedIn: string | null;
+  loggedIn: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) {
-    console.log('construction');
+    this.loggedIn = this.authService.isLoggedIn();
 
-    // this.authService.user$
-    // .subscribe((data) => {
-    //   console.log('app component: ', data);
-    //   this.user = data;
-    //   if(data)
-    //     this.loggedIn = true;
-    //   else 
-    //     this.loggedIn = false;
-    // });
-    this.loggedIn = this.authService.logged;
-    if(this.loggedIn) {
-      console.log('logged in');
-      this.router.navigate(['/']);
-    }else{ 
-      console.log('NOT logged in');
-      this.router.navigate(['/login']);
-    }
+    this.authService.getLoggedIn()
+      .subscribe( data => {
+        this.loggedIn = data;
+      });
+
   }
 
-   log() {
-     console.log(this.user);
-   }
-
-   logOut() {
-    this.authService.setUser(false);
+  logout() {
+    // Logout en servicio
+    this.authService.logout();
+    // Reload para recargar loggedIn
+    window.location.reload();
+    // Vamos navegando a /login porque el guard es lento y se desincroniza con el routeroutlet
+    this.router.navigateByUrl('/login');
   }
 
-   ngOnInit() {
-   }
 }

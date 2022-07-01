@@ -1,27 +1,31 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subject, tap } from 'rxjs';
+import { Observable, of, Subject, tap } from 'rxjs';
 import * as moment from 'moment';
+import { environment } from './../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
+  API_URL = environment.apiUrl;
   logged: boolean = false;
-  
-  constructor(private http: HttpClient) {
+  $logged: Subject<boolean> = new Subject();
 
+  constructor(private http: HttpClient) {
+    this.$logged.next(this.logged);
   }
 
   login(username: string, password: string) {
-    return this.http.post('/users/authenticate', {username,password})
+    return this.http.post(this.API_URL + '/users/authenticate', {username,password})
       .pipe(
-        tap(data => console.log(data))
+        tap(data => this.setSession(data)),
+        tap( () => this.$logged.next(true))
       );
   }
 
-  private setSession(authResult) {
+  setSession(authResult) {
     const expiresAt = moment().add(authResult.expiresIn,'second');
 
     localStorage.setItem('id_token', authResult.idToken);
@@ -29,12 +33,21 @@ export class AuthService {
   }
 
   logout() {
-    this.logged = false;
-    window.sessionStorage.removeItem('micuki');
+    localStorage.removeItem("id_token");
+    localStorage.removeItem("expires_at");
+    this.$logged.next(false);
   }
 
   public isLoggedIn() {
-    return moment().isBefore(this.getExpiration());
+    if(!localStorage.getItem('id_token')){
+      this.logout();
+      return false;
+    } else 
+        return moment().isBefore(this.getExpiration());
+  }
+
+  public getLoggedIn() {
+    return this.$logged.asObservable();
   }
 
   isLoggedOut() {
@@ -42,7 +55,13 @@ export class AuthService {
   }
 
   getExpiration() {
-    const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
+    let expiresAt;
+    try{
+      expiresAt = JSON.parse(localStorage.getItem('expires_at'));
+    } catch {
+      this.logout();
+      window.location.reload();
+    }
     return moment(expiresAt);
   }
 }

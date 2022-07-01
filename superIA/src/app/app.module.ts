@@ -17,20 +17,22 @@ import { MatInputModule } from '@angular/material/input';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { MatTab, MatTabsModule } from '@angular/material/tabs';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    DashboardComponent
+    DashboardComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
-    
+    HttpClientModule,
+
     MatSliderModule,
     MatToolbarModule,
     MatIconModule,

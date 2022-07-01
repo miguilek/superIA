@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "debug": "node --inspect-brk server.js"
+    "debug": "node --inspect-brk server.js",
+    "start": "node server.js",
+    "start dev": ""
   },
   "repository": {
     "type": "git",
@@ -32,7 +34,11 @@
   },
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
     "express": "^4.16.3",
-    "jsonwebtoken": "^8.3.0"
+    "jsonwebtoken": "^8.3.0",
+    "mongodb": "^4.7.0",
+    "mongoose": "^6.4.0",
+    "morgan": "^1.10.0"
   }
 }

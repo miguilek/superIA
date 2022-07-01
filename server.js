@@ -1,130 +1,98 @@
+// .env
+require('dotenv').config({ path: './config.env' });
+// Express. Mongoose.
 const express = require('express');
+      mongoose = require('mongoose');
+// Middleware
 const bodyParser = require('body-parser');
-const jwt = require('jsonwebtoken');
-const config = require('./config');
-const middleware = require('./middleware');
 const cors = require('cors');
-let posts = require('./posts');
-
-const user = { id: 1, username: 'test', password: 'test', firstName: 'Test', lastName: 'User' };
-
-class HandlerGenerator {
-  login(req, res) {
-    const username = req.body.username,
-          password = req.body.password;
-
-    // if (username && password) {
-    //   if (username === user.username && password === user.password) {
-    //     let token = jwt.sign({ username: username },
-    //       config.secret,
-    //       {
-    //         expiresIn: '24h' // expires in 24 hours
-    //       }
-    //     );
-    //     // return the JWT token for the future API calls
-    //     res.json({
-    //       token: token,
-    //       ...user
-    //     });
-    //   } else {
-    //     res.status(403).json({
-    //       message: 'Incorrect username or password'
-    //     });
-    //   }
-    // } else {
-    //   res.status(400).json({
-    //     message: 'Authentication failed! Please check the request'
-    //   });
-    // }
-
-    if (validateEmailAndPassword()) {
-      const userId = findUserIdForEmail(username);
-
-      const jwtBearerToken = jwt.sign({}, RSA_PRIVATE_KEY, {
-              algorithm: 'RS256',
-              expiresIn: 120,
-              subject: userId
-      });
-
-      // send the JWT back to the user
-      // TODO - multiple options available     
-      res.status(200).json({
-        idToken: jwtBearerToken,
-        expiresIn: ...
-      })              ;           
-    }
-    else {
-        // send status 401 Unauthorized
-        res.sendStatus(401); 
-    }
-  }
-  getAllPosts(req, res) {
-    res.json(posts);
-  }
-  getPost(req, res) {
-    const id = Number(req.params.id);
-    const post = posts.find(p => p.id === id);
-    if (!post) {
-      res.sendStatus(404);
-      return;
-    }
-    res.json(post);
-  }
-  createPost(req, res) {
-    const post = req.body;
-    post.id = new Date().getUTCMilliseconds();
-    posts = [...posts, post];
-    res.json(post);
-  }
-  updatePost(req, res) {
-    const id = Number(req.params.id);
-    let post = posts.find(p => p.id === id);
-    if (!post) {
-      res.sendStatus(404);
-      return;
-    }
-    Object.assign(post, req.body);
-    res.json(post);
-  }
-  deletePost(req, res) {
-    const id = Number(req.params.id);
-    const post = posts.find(p => p.id === id);
-    if (!post) {
-      res.sendStatus(404);
-      return;
-    }
-    posts = posts.filter(p => p.id !== id);
-    res.json(post);
-  }
-}
+const morgan = require('morgan');
+// Custom middleware
+const middleware = require('./modules/middleware');
+// Resources
+const AuthResource = require('./resources/authRes');
+const ServiceResource = require('./resources/serviceRes');
+const Service1Resource = require('./services/service1');
+const GenericService = require('./services/GenericService')
 
 // Starting point of the server
 function main() {
-  const app = express(); // Export app for other routes to use
-  const handlers = new HandlerGenerator();
+  const app = express();
   const port = process.env.PORT || 8000;
   
+  const serviceRes = new ServiceResource();
+  const authRes = new AuthResource();
+
   const distDir = __dirname + "/dist/";
   app.use(express.static(distDir));
 
-  app.use(bodyParser.urlencoded({ // Middleware
+  // Middleware
+  app.use(bodyParser.urlencoded({ 
     extended: true
   }));
   app.use(cors());
   app.use(bodyParser.json());
-  
-  // Routes & Handlers
-  app.post('/users/authenticate', handlers.login);
-  app.get('/posts', middleware.checkToken, handlers.getAllPosts);
-  app.get('/posts/:id', middleware.checkToken, handlers.getPost);
-  app.post('/posts', middleware.checkToken, handlers.createPost);
-  app.put('/posts/:id', middleware.checkToken, handlers.updatePost);
-  app.delete('/posts/:id', middleware.checkToken, handlers.deletePost);
+  app.use(morgan('combined'));
 
+
+  // --- ROUTES ---
+  
+  // AUTH
+  
+  app.post('/users/authenticate', authRes.login);
+
+  // SERVICE MANAGEMENT
+
+  app.get('/services', 
+    // middleware.checkToken,
+    serviceRes.getAllServices);
+  app.post('/service', 
+    // middleware.checkToken,
+    serviceRes.createService);
+  // app.get('/posts/:id', middleware.checkToken, handlers.getPost);
+  // app.put('/posts/:id', middleware.checkToken, handlers.updatePost);
+  // app.delete('/posts/:id', middleware.checkToken, handlers.deletePost);
+
+  /* 2 opciones para crear la API de services: ) */
+  
+  /*
+  --- 1a ---
+  Al crear un service desde Angular hay que generarlo en services/ e importarlo aquí.
+  Importar-cargar rutas en express dinámicamente desde un fichero
+  */
+  
+  // TODO: buscar como importar-cargar rutas en express dinamicamente
+  const service1Res = new Service1Resource();
+  app.post('/runservice/service1',
+    // middleware.checkToken,
+    service1Res.run)
+
+  /*
+  --- 2a ---
+  Crear una clase de invocación de service dinámica: 
+    1. Se le pasa en el req. el nombre del service y lo recupera de BBDD {name,uri,outputType,inputType,body}
+    2. La clase genérica recorre con un bucle el body del service llamando a las URIs definidas y enrutando las respuestas con la siguiente llamada
+  */
+
+  // Ruta de service genérica a la que se le pasa en req el nombre del service, lo coge y carga de BBDD dinámicamente y lo ejecuta
+  
+  const genericService = new ServiceResource();
+  // Como payload siempre recibimos un objeto del tipo Service {name,uri,outputType,inputType,body}
+  app.post('/runservice/service1',
+    // middleware.checkToken,
+    genericService.run)
+
+  
   // Habilitar la navegacion por URL devolver static index.html
   app.all('*', (req, res) => {
     res.sendFile(distDir + '/index.html');
   });
+
+  // DB
+  mongoose.connect(
+    process.env.ATLAS_URI, 
+    {dbName: 'SuperIA'}
+  );
 
   app.listen(port, () => console.log(`Server is listening on port: ${port}`));
 }
