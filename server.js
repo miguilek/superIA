@@ -46,12 +46,18 @@ function main() {
   app.get('/services', 
     // middleware.checkToken,
     serviceRes.getAllServices);
-  app.post('/service', 
+
+  app.post('/services', 
     // middleware.checkToken,
     serviceRes.createService);
+
   // app.get('/posts/:id', middleware.checkToken, handlers.getPost);
+  
   // app.put('/posts/:id', middleware.checkToken, handlers.updatePost);
-  // app.delete('/posts/:id', middleware.checkToken, handlers.deletePost);
+
+  app.delete('/services', 
+    // middleware.checkToken, 
+    serviceRes.clearServices);
 
   /* 2 opciones para crear la API de services: ) */
   
@@ -62,10 +68,10 @@ function main() {
   */
   
   // TODO: buscar como importar-cargar rutas en express dinamicamente
-  const service1Res = new Service1Resource();
-  app.post('/runservice/service1',
-    // middleware.checkToken,
-    service1Res.run)
+  // const service1Res = new Service1Resource();
+  // app.post('/runservice/service1',
+  //   // middleware.checkToken,
+  //   service1Res.run)
 
   /*
   --- 2a ---
@@ -76,11 +82,11 @@ function main() {
 
   // Ruta de service genérica a la que se le pasa en req el nombre del service, lo coge y carga de BBDD dinámicamente y lo ejecuta
   
-  const genericService = new ServiceResource();
-  // Como payload siempre recibimos un objeto del tipo Service {name,uri,outputType,inputType,body}
-  app.post('/runservice/service1',
-    // middleware.checkToken,
-    genericService.run)
+  // const genericService = new ServiceResource();
+  // // Como payload siempre recibimos un objeto del tipo Service {name,uri,outputType,inputType,body}
+  // app.post('/runservice/service1',
+  //   // middleware.checkToken,
+  //   genericService.run)
 
   
   // Habilitar la navegacion por URL devolver static index.html

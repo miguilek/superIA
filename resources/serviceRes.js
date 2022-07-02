@@ -4,19 +4,21 @@ class ServiceRes {
   
   getAllServices(req, res) {
     Service.find(function (err,data) { 
-      res.send(data);
+      res.send(data,200);
     });
   }
 
   createService(req, res) {
     const name = req.body.name;
     const uri = req.body.uri;
+    const type = req.body.type;
     const inputType = req.body.inputType;
     const outputType = req.body.outputType;
     const body = req.body.body;
     
     if(name && name != '' && 
       uri && uri != '' && 
+      type && type != '' && 
       inputType && inputType != '' && 
       outputType && outputType != '' &&
       body && body != ''
@@ -24,6 +26,7 @@ class ServiceRes {
       const service = new Service({
         name: name,
         uri: uri,
+        type: type,
         inputType: inputType,
         outputType: outputType,
         body: body
@@ -33,6 +36,13 @@ class ServiceRes {
     } else {
       res.sendStatus(400);
     }
+  }
+
+  clearServices(req, res) {
+    Service.deleteMany().then(result => {
+        console.log(result);
+        res.sendStatus(204)
+    });
   }
 
   // getPost(req, res) {

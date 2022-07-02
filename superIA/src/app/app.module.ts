@@ -18,6 +18,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { MatTab, MatTabsModule } from '@angular/material/tabs';
 import { HttpClientModule } from '@angular/common/http';
+import { ListadoComponent } from './components/listado/listado.component';
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import { HttpClientModule } from '@angular/common/http';
     AppComponent,
     LoginComponent,
     DashboardComponent,
+    ListadoComponent,
   ],
   imports: [
     BrowserModule,
