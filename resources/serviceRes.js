@@ -4,7 +4,7 @@ class ServiceRes {
   
   getAllServices(req, res) {
     Service.find(function (err,data) { 
-      res.send(data,200);
+      res.status(200).send(data);
     });
   }
 
@@ -21,7 +21,7 @@ class ServiceRes {
       type && type != '' && 
       inputType && inputType != '' && 
       outputType && outputType != '' &&
-      body && body != ''
+      body
     ) {
       const service = new Service({
         name: name,

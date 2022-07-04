@@ -16,9 +16,13 @@ import { MatListModule } from '@angular/material/list';
 import { MatInputModule } from '@angular/material/input';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { MatTab, MatTabsModule } from '@angular/material/tabs';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatSelectModule } from '@angular/material/select';
+
+
 import { HttpClientModule } from '@angular/common/http';
 import { ListadoComponent } from './components/listado/listado.component';
+import { CreateServiceComponent } from './components/create-service/create-service.component';
 
 
 @NgModule({
@@ -27,6 +31,7 @@ import { ListadoComponent } from './components/listado/listado.component';
     LoginComponent,
     DashboardComponent,
     ListadoComponent,
+    CreateServiceComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,7 +48,8 @@ import { ListadoComponent } from './components/listado/listado.component';
     MatListModule,
     MatInputModule,
     MatExpansionModule,
-    MatTabsModule
+    MatTabsModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]
