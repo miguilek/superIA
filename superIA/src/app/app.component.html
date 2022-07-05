@@ -18,7 +18,7 @@
       </button>
     </mat-toolbar-row>
   </mat-toolbar>
-</header>
+</header> 
 
 <mat-drawer-container class="example-container" [hasBackdrop]="true">
   <mat-drawer #drawer mode="over" class="drawer">
@@ -26,15 +26,11 @@
       <div mat-subheader>Servicios</div>
       <mat-list-item>
         <mat-icon mat-list-icon>keyboard_arrow_right</mat-icon>
-        <div mat-line>Listado</div>
+        <div mat-line routerLink="/servicelist">Listado</div>
       </mat-list-item>
       <mat-list-item>
         <mat-icon mat-list-icon>keyboard_arrow_right</mat-icon>
-        <div mat-line>Crear</div>
-      </mat-list-item>
-      <mat-list-item>
-        <mat-icon mat-list-icon>keyboard_arrow_right</mat-icon>
-        <div mat-line>API</div>
+        <div mat-line routerLink="/createservice">Crear</div>
       </mat-list-item>
       <mat-divider></mat-divider>
       <div mat-subheader>Usuarios</div>

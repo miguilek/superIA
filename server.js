@@ -47,7 +47,7 @@ function main() {
     // middleware.checkToken,
     serviceRes.getAllServices);
 
-  app.post('/services', 
+  app.post('/service', 
     // middleware.checkToken,
     serviceRes.createService);
 
@@ -55,7 +55,7 @@ function main() {
   
   // app.put('/posts/:id', middleware.checkToken, handlers.updatePost);
 
-  app.delete('/services', 
+  app.delete('/service', 
     // middleware.checkToken, 
     serviceRes.clearServices);
 

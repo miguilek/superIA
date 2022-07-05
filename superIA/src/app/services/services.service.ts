@@ -17,8 +17,15 @@ export class ServicesService {
     return this.http.get<Array<Service>>(this.API_URL + '/services');
   }
 
-  getService(name: string) {
-    return this.http.get(this.API_URL + '/services/' + name);
+  // getService(name: string) {
+  //   return this.http.get(this.API_URL + '/service?name=' + name);
+  // }
+
+  createService(service: Service) {
+    return this.http.post(this.API_URL + '/service', service);
   }
 
+  runService(service: Service,payload: any) {
+    return this.http.post(this.API_URL + service.uri, payload);
+  }
 }

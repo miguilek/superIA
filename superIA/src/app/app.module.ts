@@ -21,8 +21,8 @@ import { MatSelectModule } from '@angular/material/select';
 
 
 import { HttpClientModule } from '@angular/common/http';
-import { ListadoComponent } from './components/listado/listado.component';
 import { CreateServiceComponent } from './components/create-service/create-service.component';
+import { ServiceListComponent } from './components/service-list/service-list.component';
 
 
 @NgModule({
@@ -30,8 +30,8 @@ import { CreateServiceComponent } from './components/create-service/create-servi
     AppComponent,
     LoginComponent,
     DashboardComponent,
-    ListadoComponent,
     CreateServiceComponent,
+    ServiceListComponent
   ],
   imports: [
     BrowserModule,

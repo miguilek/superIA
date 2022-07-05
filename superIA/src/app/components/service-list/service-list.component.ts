@@ -3,11 +3,11 @@ import { Service } from 'src/app/interfaces/service';
 import { ServicesService } from 'src/app/services/services.service';
 
 @Component({
-  selector: 'app-listado',
-  templateUrl: './listado.component.html',
-  styleUrls: ['./listado.component.scss']
+  selector: 'app-service-list',
+  templateUrl: './service-list.component.html',
+  styleUrls: ['./service-list.component.scss']
 })
-export class ListadoComponent implements OnInit {
+export class ServiceListComponent implements OnInit {
 
   tareaServices: Array<Service> = [];
   microservices: Array<Service> = [];
@@ -24,6 +24,11 @@ export class ListadoComponent implements OnInit {
             this.microservices.push(s);
         })
       });
+  }
+
+  runService(service: Service) {
+    // reactive forms to get payload
+    // this.servicesService.runService(service, )
   }
 
 }

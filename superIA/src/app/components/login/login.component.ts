@@ -10,7 +10,6 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class LoginComponent implements OnInit {
   
-  public emailFormControl = new FormControl('', [Validators.required]);
   form: FormGroup;
 
   @Output() evtLogin: EventEmitter<boolean> = new EventEmitter();
@@ -23,7 +22,7 @@ export class LoginComponent implements OnInit {
     this.form = this.formBuilder.group({
       username: ['',Validators.required],
       password: ['',Validators.required]
-    })
+    });
   }
 
   ngOnInit() { 

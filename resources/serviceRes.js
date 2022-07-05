@@ -9,13 +9,14 @@ class ServiceRes {
   }
 
   createService(req, res) {
+    
     const name = req.body.name;
     const uri = req.body.uri;
     const type = req.body.type;
     const inputType = req.body.inputType;
     const outputType = req.body.outputType;
     const body = req.body.body;
-    
+
     if(name && name != '' && 
       uri && uri != '' && 
       type && type != '' && 
@@ -31,8 +32,9 @@ class ServiceRes {
         outputType: outputType,
         body: body
       });  
-      service.save();
-      res.sendStatus(201);
+      service.save()
+        .then(() => res.status(201).send())
+        .catch(err => console.log(err));
     } else {
       res.sendStatus(400);
     }
@@ -43,6 +45,17 @@ class ServiceRes {
         console.log(result);
         res.sendStatus(204)
     });
+  }
+
+  deleteService(req,res) {
+    const name = req.body.name;
+    if(name && name != '') {
+      Service.remove({ name: name })
+        .then(res => res.status(200).send(res.deletedCount))
+        .catch(err => console.log(err));
+    }
+    else
+      res.sendStatus(400);
   }
 
   // getPost(req, res) {

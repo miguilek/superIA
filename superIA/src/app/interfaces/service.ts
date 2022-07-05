@@ -1,8 +1,8 @@
 export interface Service {
-    name: String,
-    type: String,  
-    uri: String,
-    inputType: String,
-    outputType: String,
-    body: [String]
+    name: string,
+    type: string,  
+    uri: string,
+    inputType: string,
+    outputType: string,
+    body: Array<string>
 }
