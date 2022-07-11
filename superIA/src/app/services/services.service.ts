@@ -25,7 +25,7 @@ export class ServicesService {
     return this.http.post(this.API_URL + '/service', service);
   }
 
-  runService(service: Service,payload: any) {
-    return this.http.post(this.API_URL + service.uri, payload);
+  runService(service: Service, payload: any) {
+    return this.http.post(this.API_URL + '/runservice/' + service.uri, {payload: payload});
   }
 }

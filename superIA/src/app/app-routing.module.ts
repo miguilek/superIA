@@ -11,7 +11,7 @@ const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent , canActivate: [AuthGuard] },
   { path: 'servicelist', component: ServiceListComponent , canActivate: [AuthGuard] },
   { path: 'createservice', component: CreateServiceComponent , canActivate: [AuthGuard] },
-  { path: '**', redirectTo: '/listado'},
+  { path: '**', redirectTo: '/servicelist'},
 ];
 
 @NgModule({

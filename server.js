@@ -82,11 +82,11 @@ function main() {
 
   // Ruta de service genérica a la que se le pasa en req el nombre del service, lo coge y carga de BBDD dinámicamente y lo ejecuta
   
-  // const genericService = new ServiceResource();
-  // // Como payload siempre recibimos un objeto del tipo Service {name,uri,outputType,inputType,body}
-  // app.post('/runservice/service1',
-  //   // middleware.checkToken,
-  //   genericService.run)
+  const genericService = new ServiceResource();
+  // Como payload siempre recibimos un objeto del tipo Service {name,uri,outputType,inputType,body}
+  app.post('/runservice/*',
+    // middleware.checkToken,
+    genericService.run)
 
   
   // Habilitar la navegacion por URL devolver static index.html

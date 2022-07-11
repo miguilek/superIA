@@ -13,9 +13,9 @@
         <div class="row">
             <div class="col text-right">
                 <mat-tab-group>
-                    <mat-tab label="de Tarea">
-                        <mat-accordion class="description-align">
-                            <mat-expansion-panel *ngFor="let service of tareaServices">
+                    <mat-tab label="de Tarea" [formGroup]="tareaFG">
+                        <mat-accordion class="description-align" formArrayName="tareaArray">
+                            <mat-expansion-panel *ngFor="let service of tareaServices; let i=index">
                                 <mat-expansion-panel-header>
                                     <mat-panel-title>
                                             {{service.name}}
@@ -39,25 +39,25 @@
                                     <mat-list-item role="listitem" class="text-muted">{{service.body}}</mat-list-item>
                                     <mat-divider></mat-divider>
                                     <mat-list-item>
-                                        <mat-form-field appearance="legacy" class="mt-5">
+                                        <mat-form-field appearance="legacy" class="mt-5">                                        
                                             <mat-label>Payload</mat-label>
-                                            <input [id]="service.name" matInput placeholder="Placeholder">
+                                            <input id="tareaArray-{{i}}" [formControlName]="i" matInput placeholder="Placeholder">
                                             <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
                                           </mat-form-field>
                                     </mat-list-item>
                                     <mat-list-item role="listitem" class="mt-4">
-                                        <button mat-raised-button color="success" (click)="runService(service)">
+                                        <button mat-raised-button color="success" (click)="runService(service,i)">
                                             Run
                                             <mat-icon>arrow_right</mat-icon>
                                         </button>
                                     </mat-list-item>
-                                  </mat-list>
+                                </mat-list>
                             </mat-expansion-panel>
                         </mat-accordion>
                     </mat-tab>
-                    <mat-tab label="Microservicios">
-                        <mat-accordion class="description-align">
-                            <mat-expansion-panel *ngFor="let service of microservices">
+                    <mat-tab label="Microservicios" [formGroup]="microservicioFG">
+                        <mat-accordion class="description-align" formArrayName="microservicioArray">
+                            <mat-expansion-panel *ngFor="let service of microservices; let i=index">
                                 <mat-expansion-panel-header>
                                     <mat-panel-title>
                                             {{service.name}}
@@ -79,8 +79,21 @@
                                     <mat-list-item role="listitem" class="text-muted">{{service.inputType}}</mat-list-item>
                                     <mat-list-item role="listitem" class="text-muted">{{service.outputType}}</mat-list-item>
                                     <mat-list-item role="listitem" class="text-muted">{{service.body}}</mat-list-item>
-                                    <mat-list-item role="listitem" class="text-muted">Run</mat-list-item>
-                                  </mat-list>
+                                    <mat-divider></mat-divider>
+                                    <mat-list-item>
+                                        <mat-form-field appearance="legacy" class="mt-5">                                        
+                                            <mat-label>Payload</mat-label>
+                                            <input id="microservicioArray-{{i}}" [formControlName]="i" matInput placeholder="Placeholder">
+                                            <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                                          </mat-form-field>
+                                    </mat-list-item>
+                                    <mat-list-item role="listitem" class="mt-4">
+                                        <button mat-raised-button color="success" (click)="runService(service,i)">
+                                            Run
+                                            <mat-icon>arrow_right</mat-icon>
+                                        </button>
+                                    </mat-list-item>
+                                </mat-list>
                             </mat-expansion-panel>
                         </mat-accordion>
                     </mat-tab>
