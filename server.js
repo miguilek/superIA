@@ -88,6 +88,7 @@ function main() {
     // middleware.checkToken,
     genericService.run)
 
+  app.post('/testmicroservice', (req,res) => res.send('response microservice'))
   
   // Habilitar la navegacion por URL devolver static index.html
   app.all('*', (req, res) => {

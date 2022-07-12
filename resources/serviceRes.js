@@ -1,4 +1,5 @@
 const Service = require('../models/serviceModel'); 
+const request = require('request');
 
 class ServiceRes {
   
@@ -113,6 +114,31 @@ class ServiceRes {
         // Llamamos al servicio con el payload correspondiente
         // IMPORTANTE: este post tiene que ser síncrono
         // const auxPayload = await http.post(innerService.uri,auxPayload);
+        const call = {
+          uri: innerService.uri,
+          body: JSON.stringify(auxPayload),
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          }
+        };
+
+        console.log('-------TAREA--------------');
+        console.log(serviceName);
+        console.log(innerService);
+        console.log(call);
+        // auxPayload = await request(call);
+        // auxPayload = await 
+        request({
+          uri:'http://127.0.0.1:8000/testmicroservice',
+          body: JSON.stringify({}),
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }, function(error,data) {console.log(error,data.body)});
+        // console.log(auxPayload);
+        console.log('---------------------');
       };
 
       res.send('tarea');
@@ -120,12 +146,15 @@ class ServiceRes {
       // LLamamos directamente al microservicio
       // const response = await http.post(service.uri,payload);
       // res.send(data);
-      
+      console.log('#########MICROSERVICIO###########');
+      console.log(service);
+      console.log('####################');
       res.send('microservicio');
     }
     
     // res.send(500);
   }
+
 }
 
 module.exports = ServiceRes;
