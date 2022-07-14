@@ -83,78 +83,41 @@ class ServiceRes {
 
   async run(req, res) {
 
-    //   req.body tiene el nombre y el payload del servicio {name,payload}
-
     const originalUrl = req.originalUrl;
     const name = originalUrl.split('/').pop();
-    const payload = req.body.payload; // el payload incial es con el que se llama a este servicio
-    let auxPayload = payload; // Aqui guardamos los diferentes payloads del flujo (respuestas de la llamada al servicio anterior)
-    /** post servicio1(auxpayload) -> respuesta1; auxPayload = repsuesta1;
-     * post servicio2(auxPayload) -> respuesta2; auxPayload = repsuesta2;
-     * ...
-     */
+    const payload = req.body.data; // el payload incial es con el que se llama a este servicio
+    
+    //let auxPayload = payload; // Aqui guardamos los diferentes payloads del flujo (respuestas de la llamada al servicio anterior)
 
     // Recuperamos el servicio de BBDD
     const service = await Service.findOne({ name: name });
 
-    if(service.type == 'tarea') { // Es un servicio de tarea
-      /** Iteramos todos los servicios que componen este servicio de tarea 
-       *  serv: Service = {
-       *    name: String,
-       *    type: String,  
-       *    uri: String,
-       *    inputType: String,
-       *    outputType: String,
-       *    body: [String]
-       *  }
-      */
-      for(const serviceName of service.body) {
-        // Recuperamos de BBDD el servicio que toca
-        const innerService = await Service.findOne({name: serviceName}); 
-        // Llamamos al servicio con el payload correspondiente
-        // IMPORTANTE: este post tiene que ser síncrono
-        // const auxPayload = await http.post(innerService.uri,auxPayload);
-        const call = {
-          uri: innerService.uri,
-          body: JSON.stringify(auxPayload),
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json'
-          }
-        };
+    /** Iteramos todos los servicios que componen este servicio de tarea 
+     *  serv: Service = {
+     *    name: String,
+     *    type: String,  
+     *    uri: String,
+     *    inputType: String,
+     *    outputType: String,
+     *    body: [String]
+     *  }
+    */
+    for(const serviceName of service.body) {
+      // Recuperamos de BBDD el servicio que toca
+      const innerService = await Service.findOne({name: serviceName}); 
 
-        console.log('-------TAREA--------------');
-        console.log('SERVICENAME: ',serviceName);
-        console.log(innerService);
-        console.log(call);
-        console.log('PREV auxPayload:',auxPayload);
-        // auxPayload = await request(call);
-
-// ---------------
-        auxPayload = await nodeFetch('http://127.0.0.1:8000/testmicroservice', {
-          method: 'post',
-          body: JSON.stringify({}),
-          headers: {'Content-Type': 'application/json'}
-        });
-        auxPayload = await auxPayload.text();
-        // auxPayload = await auxPayload.json1();
-// --------------
-        console.log('auxPayload AFTER request: ',auxPayload);
-        console.log('---------------------------');
+      // Llamamos al servicio con el payload correspondiente de manera síncrona
+      const call = {
+        method: 'post',
+        body: JSON.stringify(auxPayload),
+        headers: {'Content-Type': 'application/json'}
       };
+      console.log(call);
+      const response = await nodeFetch(innerService.uri, call);
+      auxPayload = await response.json();
+    };
 
-      res.send('tarea');
-    } else if( service.type == 'microservicio') { // Es un microservicio
-      // LLamamos directamente al microservicio
-      // const response = await http.post(service.uri,payload);
-      // res.send(data);
-      console.log('#########MICROSERVICIO###########');
-      console.log(service);
-      console.log('####################');
-      res.send('microservicio');
-    }
-    
-    // res.send(500);
+    res.send(auxPayload);
   }
 
 }

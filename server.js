@@ -41,54 +41,27 @@ function main() {
   
   app.post('/users/authenticate', authRes.login);
 
-  // SERVICE MANAGEMENT
+
+  // SERVICE RES
 
   app.get('/services', 
     // middleware.checkToken,
     serviceRes.getAllServices);
-
   app.post('/service', 
     // middleware.checkToken,
     serviceRes.createService);
-
-  // app.get('/posts/:id', middleware.checkToken, handlers.getPost);
-  
-  // app.put('/posts/:id', middleware.checkToken, handlers.updatePost);
-
   app.delete('/service', 
     // middleware.checkToken, 
     serviceRes.clearServices);
 
-  /* 2 opciones para crear la API de services: ) */
-  
-  /*
-  --- 1a ---
-  Al crear un service desde Angular hay que generarlo en services/ e importarlo aquí.
-  Importar-cargar rutas en express dinámicamente desde un fichero
-  */
-  
-  // TODO: buscar como importar-cargar rutas en express dinamicamente
-  // const service1Res = new Service1Resource();
-  // app.post('/runservice/service1',
-  //   // middleware.checkToken,
-  //   service1Res.run)
-
-  /*
-  --- 2a ---
-  Crear una clase de invocación de service dinámica: 
-    1. Se le pasa en el req. el nombre del service y lo recupera de BBDD {name,uri,outputType,inputType,body}
-    2. La clase genérica recorre con un bucle el body del service llamando a las URIs definidas y enrutando las respuestas con la siguiente llamada
-  */
-
-  // Ruta de service genérica a la que se le pasa en req el nombre del service, lo coge y carga de BBDD dinámicamente y lo ejecuta
-  
+  // --- Ruta de service genérica a la que se le pasa en req el nombre del service, lo coge y carga de BBDD dinámicamente y lo ejecuta
   const genericService = new ServiceResource();
   // Como payload siempre recibimos un objeto del tipo Service {name,uri,outputType,inputType,body}
   app.post('/runservice/*',
     // middleware.checkToken,
     genericService.run)
 
-  app.post('/testmicroservice', (req,res) => res.send('response microservice'))
+  app.post('/testmicroservice', (req,res) => res.json({"dato1":req.body.dato1+"#"}))
   
   // Habilitar la navegacion por URL devolver static index.html
   app.all('*', (req, res) => {
