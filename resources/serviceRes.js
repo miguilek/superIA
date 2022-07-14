@@ -1,5 +1,5 @@
 const Service = require('../models/serviceModel'); 
-const request = require('request');
+const nodeFetch = require('node-fetch');
 
 class ServiceRes {
   
@@ -124,21 +124,23 @@ class ServiceRes {
         };
 
         console.log('-------TAREA--------------');
-        console.log(serviceName);
+        console.log('SERVICENAME: ',serviceName);
         console.log(innerService);
         console.log(call);
+        console.log('PREV auxPayload:',auxPayload);
         // auxPayload = await request(call);
-        // auxPayload = await 
-        request({
-          uri:'http://127.0.0.1:8000/testmicroservice',
+
+// ---------------
+        auxPayload = await nodeFetch('http://127.0.0.1:8000/testmicroservice', {
+          method: 'post',
           body: JSON.stringify({}),
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }, function(error,data) {console.log(error,data.body)});
-        // console.log(auxPayload);
-        console.log('---------------------');
+          headers: {'Content-Type': 'application/json'}
+        });
+        auxPayload = await auxPayload.text();
+        // auxPayload = await auxPayload.json1();
+// --------------
+        console.log('auxPayload AFTER request: ',auxPayload);
+        console.log('---------------------------');
       };
 
       res.send('tarea');
