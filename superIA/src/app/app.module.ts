@@ -22,12 +22,14 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 import { HttpClientModule } from '@angular/common/http';
 import { CreateServiceComponent } from './components/create-service/create-service.component';
 import { ServiceListComponent } from './components/service-list/service-list.component';
 import { EditServiceComponent } from './components/edit-service/edit-service.component';
+import { AskDeleteComponent } from './modals/ask-delete/ask-delete.component';
 
 
 @NgModule({
@@ -37,7 +39,8 @@ import { EditServiceComponent } from './components/edit-service/edit-service.com
     DashboardComponent,
     CreateServiceComponent,
     ServiceListComponent,
-    EditServiceComponent
+    EditServiceComponent,
+    AskDeleteComponent
   ],
   imports: [
     BrowserModule,
@@ -59,7 +62,8 @@ import { EditServiceComponent } from './components/edit-service/edit-service.com
     MatMenuModule,
     MatSnackBarModule,
     MatCardModule,
-    MatTableModule
+    MatTableModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]

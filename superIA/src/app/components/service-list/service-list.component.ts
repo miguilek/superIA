@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Service } from 'src/app/interfaces/service';
+import { AskDeleteComponent } from 'src/app/modals/ask-delete/ask-delete.component';
 import { ServicesService } from 'src/app/services/services.service';
 
 @Component({
@@ -22,7 +24,8 @@ export class ServiceListComponent implements OnInit {
     private servicesService: ServicesService,
     private fb: FormBuilder,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog
   ) {
     this.tareaFG = this.fb.group({
       tareaArray: this.fb.array([])
@@ -118,5 +121,22 @@ export class ServiceListComponent implements OnInit {
 
   openSnackBar(msg:string) {
     this.snackBar.open(msg, 'Cerrar', {duration: 3000});
+  }
+
+  openDialog(service: Service, enterAnimationDuration: string, exitAnimationDuration: string): void {
+    const dialogRef = this.dialog.open(AskDeleteComponent, {
+      width: '250px',
+      enterAnimationDuration,
+      exitAnimationDuration,
+    });
+    // properties
+    dialogRef.componentInstance.close = false;
+    // subscription on close
+    dialogRef.afterClosed()
+    .subscribe(_ => {
+      console.log(dialogRef.componentInstance.close);
+      if(dialogRef.componentInstance.close)
+        this.deleteService(service);
+    });
   }
 }

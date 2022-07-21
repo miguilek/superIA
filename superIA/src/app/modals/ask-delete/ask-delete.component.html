@@ -1,0 +1,16 @@
+<h1 mat-dialog-title>¿Eliminar servicio?</h1>
+<div mat-dialog-content>
+  El servicio será eliminado permanentemente.
+</div>
+<div mat-dialog-actions>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <button mat-button mat-dialog-close (click)="closeDialog(false)">No</button>
+            </div>
+            <div class="col">
+                <button mat-button mat-dialog-close cdkFocusInitial (click)="closeDialog(true)">Si</button>
+            </div>
+        </div>
+    </div>
+</div>
