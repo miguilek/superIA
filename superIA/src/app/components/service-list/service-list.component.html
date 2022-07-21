@@ -13,30 +13,120 @@
         <div class="row">
             <div class="col text-right">
                 <mat-tab-group>
-                    <mat-tab label="de Tarea" [formGroup]="tareaFG">
-                        <mat-accordion class="description-align" formArrayName="tareaArray">
+                    <mat-tab label="Tarea" [formGroup]="tareaFG">
+                        <mat-accordion class="description-align" formArrayName="tareaArray" multi>
                             <mat-expansion-panel *ngFor="let service of tareaServices; let i=index">
                                 <mat-expansion-panel-header>
                                     <mat-panel-title>
-                                            {{service.name}}
+                                        <mat-icon class="">view_list</mat-icon>
+                                        <span class="m-2">{{service.name}}</span>
                                     </mat-panel-title>
-                                    <mat-panel-description>
-                                        URI: {{service.uri}}
-                                        <div class="icon-container">
-                                            <button mat-icon-button aria-label="Editar">
-                                                <mat-icon>edit</mat-icon>
-                                            </button>
-                                            <button mat-icon-button aria-label="Borrar">
-                                                <mat-icon>delete_forever</mat-icon>
-                                            </button>
-                                        </div>
-                                    </mat-panel-description>
+                                    <mat-panel-description>URI: {{service.uri}}</mat-panel-description>
                                 </mat-expansion-panel-header>
                                 <mat-list role="list">
+                                    <mat-divider></mat-divider>
+                                    <mat-list-item role="listitem" class="text-muted">
+                                     
+                                    </mat-list-item>
+
+                                    <div class="container mb-5">
+                                        <div class="row">
+                                            <div class="col-1"></div>
+                                            <div class="col-5">
+                                                <div class="color-blue">
+                                                    <span>Input</span>
+                                                </div>
+                                                <mat-icon class="m-2">arrow_drop_down</mat-icon>
+                                                <div *ngFor="let s of service.body">
+                                                    <mat-card class="service_card m-1">{{ s }}</mat-card>
+                                                    <mat-icon class="m-2">arrow_drop_down</mat-icon>
+                                                </div>
+                                                <div class="bold color-blue">
+                                                    <span>Output</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-1"></div>
+                                            <div class="col-4">
+                                                <table class="table">
+                                                    <thead>
+                                                      <tr>
+                                                        <th scope="col">Tipo</th>
+                                                        <th scope="col">Entrada</th>
+                                                        <th scope="col">Salida</th>
+                                                      </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                      <tr>
+                                                        <td>{{ service.type }}</td>
+                                                        <td>{{ service.inputType }}</td>
+                                                        <td>{{ service.outputType }}</td>
+                                                      </tr>
+                                                    </tbody>
+                                                  </table>
+                                            </div>
+                                            <div class="col-1"></div>
+                                        </div>    
+                                    </div>
+                                    <mat-divider></mat-divider>
+                                    <mat-list-item class="mb-5">
+                                        <mat-icon>play_arrow</mat-icon> 
+                                        <span class="m-2">Run service</span>
+                                    </mat-list-item>
+                                    
+                                    <mat-list-item>
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <mat-form-field  class="full-width" appearance="outline">                                        
+                                                        <mat-label>Payload</mat-label>
+                                                        <input id="tareaArray-{{i}}" [formControlName]="i" matInput placeholder="...">
+                                                        <!-- <mat-icon matSuffix>whatshot</mat-icon> -->
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-1">
+                                                    <button mat-raised-button color="accent" class="service_btn" (click)="runService(service,i)">
+                                                        <span>Run</span>&nbsp;&nbsp;&nbsp;
+                                                        <mat-icon class="service_icon">whatshot</mat-icon>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </mat-list-item>
+                                    
+                                    <mat-list-item role="listitem" class="mt-4"></mat-list-item>
+
+                                    <mat-list-item class="right">
+                                        <button mat-flat-button color="primary" class="m-2 service_btn" (click)="updateService(service)">
+                                            <span class="">Editar</span>&nbsp;&nbsp;
+                                            <mat-icon color="white" class="service_icon">edit</mat-icon>
+                                        </button>
+                                        <button mat-stroked-button color="warn" class="border border-danger service_btn" (click)="deleteService(service)">
+                                            <span class="">Eliminar</span>&nbsp;&nbsp;
+                                            <mat-icon color="warn" class="service_icon">delete_forever</mat-icon>
+                                        </button>
+                                    </mat-list-item>
+                                </mat-list>
+                            </mat-expansion-panel>
+                        </mat-accordion>
+                    </mat-tab>
+                    <mat-tab label="Microservicios" [formGroup]="microservicioFG">
+                        <mat-accordion class="description-align" formArrayName="microservicioArray" multi>
+                            <mat-expansion-panel *ngFor="let service of microservices; let i=index">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        <mat-icon>play_arrow</mat-icon>
+                                        <span class="m-2">{{service.name}}</span>
+                                    </mat-panel-title>
+                                    <mat-panel-description>URI: {{service.uri}}</mat-panel-description>
+                                </mat-expansion-panel-header>
+                                <mat-list role="list">
+                                    <mat-list-item role="listitem" class="text-muted">{{service.body}}</mat-list-item>
+                                    <mat-divider></mat-divider>
                                     <mat-list-item role="listitem" class="text-muted">{{service.type}}</mat-list-item>
                                     <mat-list-item role="listitem" class="text-muted">{{service.inputType}}</mat-list-item>
                                     <mat-list-item role="listitem" class="text-muted">{{service.outputType}}</mat-list-item>
-                                    <mat-list-item role="listitem" class="text-muted">{{service.body}}</mat-list-item>
                                     <mat-divider></mat-divider>
                                     <mat-list-item>
                                         <mat-form-field appearance="legacy" class="mt-5">                                        
@@ -51,46 +141,14 @@
                                             <mat-icon>arrow_right</mat-icon>
                                         </button>
                                     </mat-list-item>
-                                </mat-list>
-                            </mat-expansion-panel>
-                        </mat-accordion>
-                    </mat-tab>
-                    <mat-tab label="Microservicios" [formGroup]="microservicioFG">
-                        <mat-accordion class="description-align" formArrayName="microservicioArray">
-                            <mat-expansion-panel *ngFor="let service of microservices; let i=index">
-                                <mat-expansion-panel-header>
-                                    <mat-panel-title>
-                                            {{service.name}}
-                                    </mat-panel-title>
-                                    <mat-panel-description>
-                                        URI: {{service.uri}}
-                                        <div class="icon-container">
-                                            <button mat-icon-button aria-label="Editar">
-                                                <mat-icon>edit</mat-icon>
-                                            </button>
-                                            <button mat-icon-button aria-label="Borrar">
-                                                <mat-icon>delete_forever</mat-icon>
-                                            </button>
-                                        </div>
-                                    </mat-panel-description>
-                                </mat-expansion-panel-header>
-                                <mat-list role="list">
-                                    <mat-list-item role="listitem" class="text-muted">{{service.type}}</mat-list-item>
-                                    <mat-list-item role="listitem" class="text-muted">{{service.inputType}}</mat-list-item>
-                                    <mat-list-item role="listitem" class="text-muted">{{service.outputType}}</mat-list-item>
-                                    <mat-list-item role="listitem" class="text-muted">{{service.body}}</mat-list-item>
-                                    <mat-divider></mat-divider>
-                                    <mat-list-item>
-                                        <mat-form-field appearance="legacy" class="mt-5">                                        
-                                            <mat-label>Payload</mat-label>
-                                            <input id="microservicioArray-{{i}}" [formControlName]="i" matInput placeholder="Placeholder">
-                                            <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-                                          </mat-form-field>
-                                    </mat-list-item>
-                                    <mat-list-item role="listitem" class="mt-4">
-                                        <button mat-raised-button color="success" (click)="runService(service,i)">
-                                            Run
-                                            <mat-icon>arrow_right</mat-icon>
+                                    <mat-list-item class="right">
+                                        <button mat-flat-button color="primary" class="m-2 service_btn" (click)="updateService(service)">
+                                            <span class="">Editar</span>&nbsp;&nbsp;
+                                            <mat-icon color="white" class="service_icon">edit</mat-icon>
+                                        </button>
+                                        <button mat-stroked-button color="warn" class="border border-danger service_btn" (click)="deleteService(service)">
+                                            <span class="">Eliminar</span>&nbsp;&nbsp;
+                                            <mat-icon color="warn" class="service_icon">delete_forever</mat-icon>
                                         </button>
                                     </mat-list-item>
                                 </mat-list>

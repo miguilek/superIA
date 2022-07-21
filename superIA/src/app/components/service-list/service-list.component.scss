@@ -7,3 +7,37 @@
   justify-content: space-between;
   align-items: center;
 }
+
+ 
+:host ::ng-deep .mat-list-base .mat-list-item.right .mat-list-item-content {
+  justify-content: right !important;
+  padding: 0;
+}
+
+:host ::ng-deep .mat-list-base .mat-list-item.left .mat-list-item-content {
+  justify-content: left !important;
+  padding: 0;
+}
+
+.primary_shadow {
+  background-color: rgb(42, 85, 149);
+}
+
+.service_btn {
+  padding-top: 4px;
+}
+.service_icon {
+  margin-top:-7px;
+}
+
+.service_card {
+  border: 1px solid  rgb(154, 171, 194);
+}
+
+.color-blue {
+  color: rgb(2, 39, 91);
+}
+
+.full-width {
+  width: 100%;
+}

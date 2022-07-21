@@ -1,24 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
-import { Service } from 'src/app/interfaces/service';
-import { ServicesService } from 'src/app/services/services.service';
-
-@Component({
-  selector: 'app-create-service',
-  templateUrl: './create-service.component.html',
-  styleUrls: ['./create-service.component.scss']
-})
-export class CreateServiceComponent implements OnInit {
-
-  form: FormGroup;
+form: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,
     private serviceService: ServicesService,
-    private snackBar: MatSnackBar,
-    private router: Router
+    private snackBar: MatSnackBar
   ) {
     this.form = this.formBuilder.group({
       name: ['',Validators.required],
@@ -46,10 +31,7 @@ export class CreateServiceComponent implements OnInit {
 
     this.serviceService.createService(service)
       .subscribe({
-        next: _ => {
-          this.openSnackBar();
-          this.router.navigateByUrl('/servicelist');
-        },
+        next: _ => {this.openSnackBar()},
         error: (err) => {
           alert('Error creando servicio');
           console.log(err);
@@ -61,5 +43,3 @@ export class CreateServiceComponent implements OnInit {
   openSnackBar() {
     this.snackBar.open('Servicio creado correctamente', 'Cerrar', {duration: 3000});
   }
-
-}

@@ -6,7 +6,7 @@
           <div class="container-fluid">
             <div class="row">
               <div class="col">
-                <h1>Crear nuevo servicio</h1>
+                <h1>Editar servicio</h1>
               </div>
             </div>
             <div class="row">
@@ -62,9 +62,9 @@
             </div>
             <div class="row">
               <div class="col">
-                <button  mat-raised-button [disabled]="!form.valid" color="primary" (click)="submit() ">
-                  Crear
-                  <mat-icon>add</mat-icon>
+                <button class="service_btn"  mat-raised-button [disabled]="!form.valid" color="primary" (click)="submit()">
+                  Guardar
+                  <mat-icon class="service_icon">save_alt</mat-icon>
                 </button>
               </div>
             </div>

@@ -12,8 +12,6 @@ const middleware = require('./modules/middleware');
 // Resources
 const AuthResource = require('./resources/authRes');
 const ServiceResource = require('./resources/serviceRes');
-const Service1Resource = require('./services/service1');
-const GenericService = require('./services/GenericService')
 
 // Starting point of the server
 function main() {
@@ -50,17 +48,30 @@ function main() {
   app.post('/service', 
     // middleware.checkToken,
     serviceRes.createService);
-  app.delete('/service', 
+    
+  // TODO: controlar que la ruta sea correcta: que tenga la forma host/service/<serviceName>
+  app.put('/service/*',
+    // middleware.checkToken,
+    serviceRes.updateService);
+
+  // TODO: controlar que la ruta sea correcta: que tenga la forma host/service/<serviceName>
+  app.delete('/service/*', 
+    // middleware.checkToken, 
+    serviceRes.deleteService);
+
+  app.delete('/allservices', 
     // middleware.checkToken, 
     serviceRes.clearServices);
 
   // --- Ruta de service genérica a la que se le pasa en req el nombre del service, lo coge y carga de BBDD dinámicamente y lo ejecuta
   const genericService = new ServiceResource();
   // Como payload siempre recibimos un objeto del tipo Service {name,uri,outputType,inputType,body}
+  // TODO: controlar que la ruta sea correcta: que tenga la forma host/runservice/<serviceName>
   app.post('/runservice/*',
     // middleware.checkToken,
     genericService.run)
 
+  // Ruta de test para simular la llamada a un servicio. En producción se llamará al host de microservicios.
   app.post('/testmicroservice', (req,res) => res.json({"dato1":req.body.dato1+"#"}))
   
   // Habilitar la navegacion por URL devolver static index.html

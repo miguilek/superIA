@@ -24,31 +24,35 @@
   <mat-drawer #drawer mode="over" class="drawer">
     <mat-list>
       <div mat-subheader>Servicios</div>
-      <mat-list-item>
+      
+      
+      <mat-selection-list multiple="false">
+        <mat-list-option style="height: 0px;"></mat-list-option>
+        <mat-list-option (click)="drawer.toggle()" routerLink="/servicelist">
+          <mat-icon mat-list-icon>keyboard_arrow_right</mat-icon>
+          <span>Listado</span>
+        </mat-list-option>
+        <mat-list-option  (click)="drawer.toggle()" routerLink="/createservice">
+          <mat-icon mat-list-icon>keyboard_arrow_right</mat-icon>
+          <span>Crear</span>
+        </mat-list-option>
+      </mat-selection-list>
+    
+
+      <!-- <div mat-subheader>Usuarios</div>
+
+      <button (click)="drawer.toggle()" disabled routerLink="/" mat-menu-item>
         <mat-icon mat-list-icon>keyboard_arrow_right</mat-icon>
-        <div mat-line routerLink="/servicelist">Listado</div>
-      </mat-list-item>
-      <mat-list-item>
-        <mat-icon mat-list-icon>keyboard_arrow_right</mat-icon>
-        <div mat-line routerLink="/createservice">Crear</div>
-      </mat-list-item>
-      <mat-divider></mat-divider>
-      <div mat-subheader>Usuarios</div>
-      <mat-list-item>
-        <mat-icon mat-list-icon>keyboard_arrow_right</mat-icon>
-        <div mat-line>Listado</div>
-      </mat-list-item>
-      <mat-list-item>
-        <mat-icon mat-list-icon>keyboard_arrow_right</mat-icon>
-        <div mat-line>Gestión</div>
-      </mat-list-item>
+        <span>Gestión</span>
+      </button> -->
+
     </mat-list>  
   </mat-drawer>
   <mat-drawer-content>
 
     <router-outlet></router-outlet>
 
-    <!-- <footer class="footer">
+    <footer class="footer mt-5">
       <mat-toolbar color="primary">
         <mat-toolbar-row class="mat-elevation-z10">
           <img class="logo_header" src="assets/brainicon.svg"/>
@@ -62,7 +66,7 @@
           <span class="text_light m-5">Privacy policy</span>
         </mat-toolbar-row>
       </mat-toolbar>  
-    </footer> -->
+    </footer>
 
   </mat-drawer-content>
 </mat-drawer-container>

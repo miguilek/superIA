@@ -25,7 +25,15 @@ export class ServicesService {
     return this.http.post(this.API_URL + '/service', service);
   }
 
+  deleteService(serviceName: string) {
+    return this.http.delete(this.API_URL + '/service/' + serviceName);
+  }
+
+  updateService(serviceName: string, service: Service) {
+    return this.http.put(this.API_URL + '/service/' + serviceName, service);
+  }
+
   runService(service: Service, payload: any) {
-    return this.http.post(this.API_URL + '/runservice/' + service.uri, {payload: payload});
+    return this.http.post(service.uri, payload);
   }
 }
