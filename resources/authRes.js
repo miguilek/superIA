@@ -7,7 +7,7 @@ class AuthRes {
     const username = req.body.username;
     const password = req.body.password;
     
-    if (true) {
+    if (username && password) {
       const userId = username;
 
       const jwtBearerToken = jwt.sign({ username: username }, RSA_PRIVATE_KEY, {

@@ -2,15 +2,7 @@
 <div mat-dialog-content>
   El servicio será eliminado permanentemente.
 </div>
-<div mat-dialog-actions>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col">
-                <button mat-button mat-dialog-close (click)="closeDialog(false)">No</button>
-            </div>
-            <div class="col">
-                <button mat-button mat-dialog-close cdkFocusInitial (click)="closeDialog(true)">Si</button>
-            </div>
-        </div>
-    </div>
+<div mat-dialog-actions class="d-flex justify-content-between">
+    <button mat-stroked-button mat-dialog-close color="warn" class="border border-danger" (click)="closeDialog(true)">Si</button>
+    <button mat-raised-button mat-dialog-close cdkFocusInitial color="primary" (click)="closeDialog(false)">No</button>
 </div>

@@ -2,32 +2,34 @@
     <h1>Listado de servicios</h1>
     <div class="container">
         <div class="row">
-            <div class="col"></div>
-            <div class="col-1">
-                <button mat-raised-button color="primary" routerLink="/createservice">
-                    Nuevo
-                    <mat-icon>add</mat-icon>
-                </button>
-            </div>
-        </div>
-        <div class="row">
             <div class="col text-right">
-                <mat-tab-group>
-                    <mat-tab label="Tarea" [formGroup]="tareaFG">
-                        <mat-accordion class="description-align" formArrayName="tareaArray" multi>
+                <mat-tab-group [(selectedIndex)]="selectedTab">
+                    <mat-tab label="Tarea">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <button mat-raised-button color="primary" [routerLink]="['/createservice']" [queryParams]="{type:'tarea'}" class="mt-2">
+                                    Nuevo
+                                    <mat-icon>add</mat-icon>
+                                </button>
+                            </div>
+                            <mat-form-field appearance="fill">
+                                <mat-label>Buscar servicio</mat-label>
+                                <input matInput placeholder="Nombre">
+                                <mat-icon matSuffix>search</mat-icon>
+                            </mat-form-field>
+                        </div>
+                        <mat-accordion class="description-align" multi>
                             <mat-expansion-panel *ngFor="let service of tareaServices; let i=index">
                                 <mat-expansion-panel-header>
                                     <mat-panel-title>
                                         <mat-icon class="">view_list</mat-icon>
                                         <span class="m-2">{{service.name}}</span>
                                     </mat-panel-title>
-                                    <mat-panel-description>URI: {{service.uri}}</mat-panel-description>
+                                    <mat-panel-description>{{service.uri}}</mat-panel-description>
                                 </mat-expansion-panel-header>
                                 <mat-list role="list">
-                                    <mat-divider></mat-divider>
-                                    <mat-list-item role="listitem" class="text-muted">
-                                     
-                                    </mat-list-item>
+
+                                    <mat-divider class="mb-5"></mat-divider>
 
                                     <div class="container mb-5">
                                         <div class="row">
@@ -67,83 +69,58 @@
                                             <div class="col-1"></div>
                                         </div>    
                                     </div>
-                                    <mat-divider></mat-divider>
-                                    <mat-list-item class="mb-5">
-                                        <mat-icon>play_arrow</mat-icon> 
-                                        <span class="m-2">Ejecutar servicio</span>
-                                    </mat-list-item>
-                                    
-                                    <mat-list-item>
-                                        <div class="container-fluid">
-                                            <div class="row">
-                                                <div class="col">
-                                                    <mat-form-field  class="full-width" appearance="outline">                                        
-                                                        <mat-label>Payload</mat-label>
-                                                        <input id="tareaArray-{{i}}" [formControlName]="i" matInput placeholder="...">
-                                                    </mat-form-field>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-1">
-                                                    <button mat-raised-button color="accent" class="service_btn" (click)="runService(service,i)">
-                                                        <span>Run</span>&nbsp;&nbsp;&nbsp;
-                                                        <mat-icon class="service_icon">whatshot</mat-icon>
-                                                    </button>
-                                                </div>
-                                            </div>
+
+                                    <mat-list-item class="between">
+                                        <button mat-flat-button color="accent" class="m-2 service_btn" (click)="openDialogRun(service,'0ms','0ms')">
+                                            <span class="">Ejecutar</span>&nbsp;&nbsp;
+                                            <mat-icon color="white" class="service_icon">whatshot</mat-icon>
+                                        </button>
+                                        <div>
+                                            <button mat-flat-button color="primary" class="m-2 service_btn" (click)="updateService(service)">
+                                                <span class="">Editar</span>&nbsp;&nbsp;
+                                                <mat-icon color="white" class="service_icon">edit</mat-icon>
+                                            </button>
+                                            <button mat-stroked-button color="warn" class="border border-danger service_btn" (click)="openDialogDelete(service,'0ms', '0ms')">
+                                                <span class="">Eliminar</span>&nbsp;&nbsp;
+                                                <mat-icon color="warn" class="service_icon">delete_forever</mat-icon>
+                                            </button>
                                         </div>
                                     </mat-list-item>
-                                    
-                                    <mat-list-item role="listitem" class="mt-4"></mat-list-item>
 
-                                    <mat-list-item class="right">
-                                        <button mat-flat-button color="primary" class="m-2 service_btn" (click)="updateService(service)">
-                                            <span class="">Editar</span>&nbsp;&nbsp;
-                                            <mat-icon color="white" class="service_icon">edit</mat-icon>
-                                        </button>
-                                        <button mat-stroked-button color="warn" class="border border-danger service_btn" (click)="openDialog(service,'0ms', '0ms')">
-                                            <span class="">Eliminar</span>&nbsp;&nbsp;
-                                            <mat-icon color="warn" class="service_icon">delete_forever</mat-icon>
-                                        </button>
-                                    </mat-list-item>
                                 </mat-list>
                             </mat-expansion-panel>
                         </mat-accordion>
                     </mat-tab>
-                    <mat-tab label="Microservicios" [formGroup]="microservicioFG">
-                        <mat-accordion class="description-align" formArrayName="microservicioArray" multi>
+                    <mat-tab label="Microservicios">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <button mat-raised-button color="primary" [routerLink]="['/createservice']" [queryParams]="{type:'microservicio'}" class="mt-2">
+                                    Nuevo
+                                    <mat-icon>add</mat-icon>
+                                </button>
+                            </div>
+                            <mat-form-field appearance="fill">
+                                <mat-label>Buscar servicio</mat-label>
+                                <input matInput placeholder="Nombre">
+                                <mat-icon matSuffix>search</mat-icon>
+                            </mat-form-field>
+                        </div>
+                        <mat-accordion class="description-align" multi>
                             <mat-expansion-panel *ngFor="let service of microservices; let i=index">
                                 <mat-expansion-panel-header>
                                     <mat-panel-title>
                                         <mat-icon class="">view_list</mat-icon>
                                         <span class="m-2">{{service.name}}</span>
                                     </mat-panel-title>
-                                    <mat-panel-description>URI: {{service.uri}}</mat-panel-description>
+                                    <mat-panel-description>{{service.uri}}</mat-panel-description>
                                 </mat-expansion-panel-header>
                                 <mat-list role="list">
-                                    <mat-divider></mat-divider>
-                                    <mat-list-item role="listitem" class="text-muted">
-                                     
-                                    </mat-list-item>
 
-                                    <div class="container mb-5">
+                                    <mat-divider class=""></mat-divider>
+                                     
+                                    <div class="container">
                                         <div class="row">
-                                            <div class="col-1"></div>
-                                            <div class="col-5">
-                                                <div class="color-blue">
-                                                    <span>Input</span>
-                                                </div>
-                                                <mat-icon class="m-2">arrow_drop_down</mat-icon>
-                                                <div *ngFor="let s of service.body">
-                                                    <mat-card class="service_card m-1">{{ s }}</mat-card>
-                                                    <mat-icon class="m-2">arrow_drop_down</mat-icon>
-                                                </div>
-                                                <div class="bold color-blue">
-                                                    <span>Output</span>
-                                                </div>
-                                            </div>
-                                            <div class="col-1"></div>
-                                            <div class="col-4">
+                                            <div class="col">
                                                 <table class="table">
                                                     <thead>
                                                       <tr>
@@ -161,48 +138,26 @@
                                                     </tbody>
                                                   </table>
                                             </div>
-                                            <div class="col-1"></div>
                                         </div>    
                                     </div>
-                                    <mat-divider></mat-divider>
-                                    <mat-list-item class="mb-5">
-                                        <mat-icon>play_arrow</mat-icon> 
-                                        <span class="m-2">Ejecutar servicio</span>
-                                    </mat-list-item>
                                     
-                                    <mat-list-item>
-                                        <div class="container-fluid">
-                                            <div class="row">
-                                                <div class="col">
-                                                    <mat-form-field  class="full-width" appearance="outline">                                        
-                                                        <mat-label>Payload</mat-label>
-                                                        <input id="tareaArray-{{i}}" [formControlName]="i" matInput placeholder="...">
-                                                    </mat-form-field>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-1">
-                                                    <button mat-raised-button color="accent" class="service_btn" (click)="runService(service,i)">
-                                                        <span>Run</span>&nbsp;&nbsp;&nbsp;
-                                                        <mat-icon class="service_icon">whatshot</mat-icon>
-                                                    </button>
-                                                </div>
-                                            </div>
+                                    <mat-list-item class="between">
+                                        <button mat-flat-button color="accent" class="m-2 service_btn" (click)="openDialogRun(service,'0ms','0ms')">
+                                            <span class="">Ejecutar</span>&nbsp;&nbsp;
+                                            <mat-icon color="white" class="service_icon">whatshot</mat-icon>
+                                        </button>
+                                        <div>
+                                            <button mat-flat-button color="primary" class="m-2 service_btn" (click)="updateService(service)">
+                                                <span class="">Editar</span>&nbsp;&nbsp;
+                                                <mat-icon color="white" class="service_icon">edit</mat-icon>
+                                            </button>
+                                            <button mat-stroked-button color="warn" class="border border-danger service_btn" (click)="openDialogDelete(service,'0ms', '0ms')">
+                                                <span class="">Eliminar</span>&nbsp;&nbsp;
+                                                <mat-icon color="warn" class="service_icon">delete_forever</mat-icon>
+                                            </button>
                                         </div>
                                     </mat-list-item>
                                     
-                                    <mat-list-item role="listitem" class="mt-4"></mat-list-item>
-
-                                    <mat-list-item class="right">
-                                        <button mat-flat-button color="primary" class="m-2 service_btn" (click)="updateService(service)">
-                                            <span class="">Editar</span>&nbsp;&nbsp;
-                                            <mat-icon color="white" class="service_icon">edit</mat-icon>
-                                        </button>
-                                        <button mat-stroked-button color="warn" class="border border-danger service_btn" (click)="openDialog(service,'0ms', '0ms')">
-                                            <span class="">Eliminar</span>&nbsp;&nbsp;
-                                            <mat-icon color="warn" class="service_icon">delete_forever</mat-icon>
-                                        </button>
-                                    </mat-list-item>
                                 </mat-list>
                             </mat-expansion-panel>
                         </mat-accordion>
@@ -212,3 +167,17 @@
         </div>
     </div>
 </div>
+<br><br><br><br>
+<br><br><br><br>
+<br><br><br><br>
+<br><br><br><br>
+<br><br><br><br>
+<!-- <br><br><br><br>
+<br><br><br><br>
+<br><br><br><br>
+<br><br><br><br>
+<br><br><br><br>
+<br><br><br><br>
+<br><br><br><br>
+<br><br><br><br>
+<br><br><br><br> -->

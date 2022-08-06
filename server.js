@@ -72,7 +72,7 @@ function main() {
     genericService.run)
 
   // Ruta de test para simular la llamada a un servicio. En producción se llamará al host de microservicios.
-  app.post('/testmicroservice', (req,res) => res.json({"dato1":req.body.dato1+"#"}))
+  app.post('/testmicroservice', (req,res) => res.json({"data":req.body.data+"#"}))
   
   // Habilitar la navegacion por URL devolver static index.html
   app.all('*', (req, res) => {

@@ -1,6 +1,6 @@
 <div class="container mt-5 p-5">
   <div class="row">
-    <div class="col-4"></div>
+    <div class="col-2"></div>
     <div class="col-6">
       <form class="example-form mt-5" [formGroup]="form">
           <div class="container-fluid">
@@ -40,6 +40,7 @@
                   <mat-label>Tipo entrada</mat-label>
                   <mat-select formControlName="inputType">
                     <mat-option value="JSON">JSON</mat-option>
+                    <mat-option value="image">Image</mat-option>
                   </mat-select>
                 </mat-form-field>
               </div>
@@ -52,7 +53,7 @@
                 </mat-form-field>
               </div>
             </div>
-            <div class="row">
+            <div *ngIf="serviceType == 'tarea'" class="row">
               <div class="col">
                 <mat-form-field class="full-width" appearance="outline">
                   <mat-label>Body (en formato JSON)</mat-label>
@@ -61,7 +62,14 @@
               </div>
             </div>
             <div class="row">
-              <div class="col">
+              <div class="col-2">
+                <button  mat-button color="primary" [routerLink]="['/servicelist']" [queryParams]="{selectedTab:serviceListTab}" class="service_btn">
+                  <mat-icon class="service_icon">keyboard_arrow_left</mat-icon>
+                  Volver al listado
+                </button>
+              </div>
+              <div class="col-6"></div>
+              <div class="col-2">
                 <button class="service_btn"  mat-raised-button [disabled]="!form.valid" color="primary" (click)="submit()">
                   Guardar
                   <mat-icon class="service_icon">save_alt</mat-icon>

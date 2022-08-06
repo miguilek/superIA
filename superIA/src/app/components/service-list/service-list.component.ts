@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Service } from 'src/app/interfaces/service';
 import { AskDeleteComponent } from 'src/app/modals/ask-delete/ask-delete.component';
+import { RunServiceComponent } from 'src/app/modals/run-service/run-service.component';
 import { ServicesService } from 'src/app/services/services.service';
 
 @Component({
@@ -20,58 +21,22 @@ export class ServiceListComponent implements OnInit {
   tareaFG: FormGroup;
   microservicioFG: FormGroup;
 
+  selectedTab = 0;
+
   constructor(
     private servicesService: ServicesService,
     private fb: FormBuilder,
     private router: Router,
     private snackBar: MatSnackBar,
-    private dialog: MatDialog
-  ) {
-    this.tareaFG = this.fb.group({
-      tareaArray: this.fb.array([])
-    });
-    this.microservicioFG = this.fb.group({
-      microservicioArray: this.fb.array([])
-    });
-  }
+    private dialog: MatDialog,
+    private activatedRoute: ActivatedRoute
+  ) { }
 
   ngOnInit(): void {
     this.loadServices();
-  }
-
-  get tareaArray() {
-    return this.tareaFG.get('tareaArray') as FormArray;
-  }
-
-  get microservicioArray() {
-    return this.microservicioFG.get('microservicioArray') as FormArray;
-  }
-
-  runService(service: Service, i: number) {
-    const payload = {
-      "data": {
-        "dato1":this.tareaArray.value[i]
-      }
-    };
-
-    this.servicesService.runService(service, payload)
-    .subscribe(data => {
-      console.log('RETURN FROM RUN SERVICE: ',data)
-    });
-  }
-
-  runMicroservice(service: Service, i: number) {
-    const payload = {
-      "dato1": this.microservicioArray.value[i]
-    };
-    this.servicesService.runService(service, payload)
-    .subscribe({
-      next: data => {
-        console.log('RETURN FROM RUN MICROSERVICE: ',data)
-      },
-      error: error => {
-        alert('Error');
-      }
+    this.activatedRoute.queryParams
+    .subscribe(params => {
+      this.selectedTab = params['selectedTab'];
     });
   }
 
@@ -89,16 +54,17 @@ export class ServiceListComponent implements OnInit {
   }
 
   updateService(service: Service) {
-    this.router.navigate(['/editservice', 
-      {
-        name: service.name,
-        inputType: service.inputType,
-        outputType: service.outputType,
-        body: service.body,
-        uri: service.uri,
-        type: service.type
+    this.router.navigate(['/editservice'], 
+      { queryParams:{
+          name: service.name,
+          inputType: service.inputType,
+          outputType: service.outputType,
+          body: service.body,
+          uri: service.uri,
+          type: service.type
+        }
       }
-    ]);
+    );
   }
 
   private loadServices() {
@@ -109,11 +75,11 @@ export class ServiceListComponent implements OnInit {
       services.forEach(s => {
         if(s.type == 'tarea'){
           this.tareaServices.push(s);
-          this.tareaArray.push(this.fb.control(''));
+          // this.tareaArray.push(this.fb.control(''));
         }
         else if(s.type == 'microservicio'){
           this.microservices.push(s);
-          this.microservicioArray.push(this.fb.control(''));
+          // this.microservicioArray.push(this.fb.control(''));
         }
       })
     });
@@ -123,9 +89,9 @@ export class ServiceListComponent implements OnInit {
     this.snackBar.open(msg, 'Cerrar', {duration: 3000});
   }
 
-  openDialog(service: Service, enterAnimationDuration: string, exitAnimationDuration: string): void {
+  openDialogDelete(service: Service, enterAnimationDuration: string, exitAnimationDuration: string): void {
     const dialogRef = this.dialog.open(AskDeleteComponent, {
-      width: '250px',
+      width: '300px',
       enterAnimationDuration,
       exitAnimationDuration,
     });
@@ -134,9 +100,25 @@ export class ServiceListComponent implements OnInit {
     // subscription on close
     dialogRef.afterClosed()
     .subscribe(_ => {
-      console.log(dialogRef.componentInstance.close);
       if(dialogRef.componentInstance.close)
         this.deleteService(service);
+    });
+  }
+
+  openDialogRun(service: Service, enterAnimationDuration: string, exitAnimationDuration: string): void {
+    const dialogRef = this.dialog.open(RunServiceComponent, {
+      width: '50%',
+      enterAnimationDuration,
+      exitAnimationDuration,
+    });
+    // properties
+    dialogRef.componentInstance.service = service;
+    // subscription on close
+    dialogRef.afterClosed()
+    .subscribe(_ => {
+      // console.log(dialogRef.componentInstance.close);
+      // if(dialogRef.componentInstance.close)
+      //   this.deleteService(service);
     });
   }
 }

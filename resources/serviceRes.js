@@ -24,7 +24,7 @@ class ServiceRes {
       type && type != '' && 
       inputType && inputType != '' && 
       outputType && outputType != '' &&
-      body
+      ((type == 'tarea' && body)||type == 'microservicio')
     ) {
       const service = new Service({
         name: name,
@@ -58,7 +58,7 @@ class ServiceRes {
       type && type != '' && 
       inputType && inputType != '' && 
       outputType && outputType != '' &&
-      body
+      ((type == 'tarea' && body)||type == 'microservicio')
     ) {
       const filter = { name: 'Jean-Luc Picard' };
       const update = { age: 59 };
@@ -126,10 +126,10 @@ class ServiceRes {
   // }
 
   async run(req, res) {
-
+    
     const originalUrl = req.originalUrl;
     const name = originalUrl.split('/').pop();
-    const payload = req.body.data; // el payload incial es con el que se llama a este servicio
+    const payload = req.body; // el payload incial es con el que se llama a este servicio
     
     let auxPayload = payload; // Aqui guardamos los diferentes payloads del flujo (respuestas de la llamada al servicio anterior)
 
@@ -151,15 +151,21 @@ class ServiceRes {
       const innerService = await Service.findOne({name: serviceName}); 
 
       // Llamamos al servicio con el payload correspondiente de manera síncrona
+      console.log(auxPayload);
       const call = {
         method: 'post',
         body: JSON.stringify(auxPayload),
         headers: {'Content-Type': 'application/json'}
       };
+      console.log(serviceName);
+      console.log(innerService.uri);
       console.log(call);
       const response = await nodeFetch(innerService.uri, call);
       auxPayload = await response.json();
     };
+
+    // Para simular que tarda 1 seg
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
     res.send(auxPayload);
   }

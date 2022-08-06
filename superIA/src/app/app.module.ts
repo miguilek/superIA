@@ -23,13 +23,16 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
+import { NgxDropzoneModule } from 'ngx-dropzone';
 
 import { HttpClientModule } from '@angular/common/http';
 import { CreateServiceComponent } from './components/create-service/create-service.component';
 import { ServiceListComponent } from './components/service-list/service-list.component';
 import { EditServiceComponent } from './components/edit-service/edit-service.component';
 import { AskDeleteComponent } from './modals/ask-delete/ask-delete.component';
+import { RunServiceComponent } from './modals/run-service/run-service.component';
 
 
 @NgModule({
@@ -40,7 +43,8 @@ import { AskDeleteComponent } from './modals/ask-delete/ask-delete.component';
     CreateServiceComponent,
     ServiceListComponent,
     EditServiceComponent,
-    AskDeleteComponent
+    AskDeleteComponent,
+    RunServiceComponent
   ],
   imports: [
     BrowserModule,
@@ -63,7 +67,9 @@ import { AskDeleteComponent } from './modals/ask-delete/ask-delete.component';
     MatSnackBarModule,
     MatCardModule,
     MatTableModule,
-    MatDialogModule
+    MatDialogModule,
+    MatProgressSpinnerModule,
+    NgxDropzoneModule
   ],
   providers: [],
   bootstrap: [AppComponent]

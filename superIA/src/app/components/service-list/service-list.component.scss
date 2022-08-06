@@ -19,6 +19,11 @@
   padding: 0;
 }
 
+:host ::ng-deep .mat-list-base .mat-list-item.between .mat-list-item-content {
+  justify-content: space-between !important;
+  padding: 0;
+}
+
 .primary_shadow {
   background-color: rgb(42, 85, 149);
 }

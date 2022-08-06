@@ -14,7 +14,7 @@
       <span class="spacer-x"></span>
       <mat-icon class="m-5">person</mat-icon>
       <button (click)="logout()" mat-icon-button aria-label="Example icon-button with menu icon">
-        <mat-icon>close</mat-icon>
+        <mat-icon>power_settings_new</mat-icon>
       </button>
     </mat-toolbar-row>
   </mat-toolbar>
@@ -22,43 +22,70 @@
 
 <mat-drawer-container class="example-container" [hasBackdrop]="true">
   <mat-drawer #drawer mode="over" class="drawer">
-    <mat-list>
-      <div mat-subheader>Servicios</div>
-      
-      
-      <mat-selection-list multiple="false">
-        <mat-list-option style="height: 0px;"></mat-list-option>
-        <mat-list-option (click)="drawer.toggle()" routerLink="/servicelist">
-          <mat-icon mat-list-icon>keyboard_arrow_right</mat-icon>
-          <span>Listado</span>
-        </mat-list-option>
-        <mat-list-option  (click)="drawer.toggle()" routerLink="/createservice">
-          <mat-icon mat-list-icon>keyboard_arrow_right</mat-icon>
-          <span>Crear</span>
-        </mat-list-option>
-      </mat-selection-list>
     
+    <div style="display: flex;flex-direction: column;justify-content: space-between; height: 100%;">
+      <mat-list>
+        <div mat-subheader>Servicios</div>
+        
+        
+        <mat-selection-list multiple="false">
+          <mat-list-option style="height: 0px;"></mat-list-option>
+          <mat-list-option (click)="drawer.toggle()" routerLink="/servicelist">
+            <mat-icon mat-list-icon>keyboard_arrow_right</mat-icon>
+            <span>Listado</span>
+          </mat-list-option>
+          <mat-list-option  (click)="drawer.toggle()" routerLink="/createservice">
+            <mat-icon mat-list-icon>keyboard_arrow_right</mat-icon>
+            <span>Crear</span>
+          </mat-list-option>
+        </mat-selection-list>    
+  
+        <!-- <div mat-subheader>Usuarios</div>
+  
+        <button (click)="drawer.toggle()" disabled routerLink="/" mat-menu-item>
+          <mat-icon mat-list-icon>keyboard_arrow_right</mat-icon>
+          <span>Gestión</span>
+        </button> -->
+  
+      </mat-list>  
+      
+      <mat-list>
+        <!-- <div mat-subheader>Servicios</div> -->
+        <mat-divider class=""></mat-divider>
+        <mat-selection-list multiple="false">
+          <mat-list-option style="height: 0px;"></mat-list-option>
+          <mat-list-option>
+            <mat-icon mat-list-icon>person</mat-icon>
+            <span>Perfil</span>
+          </mat-list-option>
+          <mat-list-option (click)="logout()">
+            <mat-icon mat-list-icon>power_settings_new</mat-icon>
+            <span>Cerrar sesión</span>
+          </mat-list-option>
+        </mat-selection-list>
+  
+      </mat-list> 
+    </div>
 
-      <!-- <div mat-subheader>Usuarios</div>
+ 
 
-      <button (click)="drawer.toggle()" disabled routerLink="/" mat-menu-item>
-        <mat-icon mat-list-icon>keyboard_arrow_right</mat-icon>
-        <span>Gestión</span>
-      </button> -->
+    <!-- <div class="box">
+      <div>One</div>
+      <div>Two</div>
+    </div> -->
 
-    </mat-list>  
   </mat-drawer>
   <mat-drawer-content>
 
     <router-outlet></router-outlet>
 
     <footer class="footer mt-5">
-      <mat-toolbar color="primary">
+      <mat-toolbar>
         <mat-toolbar-row class="mat-elevation-z10">
-          <img class="logo_header" src="assets/brainicon.svg"/>
+          <!-- <img class="logo_header" src="assets/brainicon.svg"/> -->
           <span class="mar-1"></span>
-          <span style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">SuperIA</span>
-          <span class="spacer-x"></span>
+          <!-- <span style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">SuperIA</span> -->
+          <!-- <span class="spacer-x"></span> -->
           <span class="text_light">Terms and conditions</span>
           <span class="spacer-x"></span>
           <span class="text_light">FAQ</span>

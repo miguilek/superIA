@@ -24,7 +24,7 @@ export class EditServiceComponent implements OnInit {
   ) {
     this.form = this.formBuilder.group({
       name: [{value:'',disabled:true},Validators.required],
-      type: ['',Validators.required],
+      type: [{value:'',disabled:true},Validators.required],
       uri: ['',Validators.required],
       inputType: ['',Validators.required],
       outputType: ['',Validators.required],
@@ -33,16 +33,36 @@ export class EditServiceComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.params
+    this.route.queryParams
     .subscribe(params => {
       this.form.controls['name'].setValue(params['name']);
       this.serviceName = params['name'];
       this.form.controls['type'].setValue(params['type']);
       this.form.controls['inputType'].setValue(params['inputType']);
       this.form.controls['outputType'].setValue(params['outputType']);
-      this.form.controls['body'].setValue(this.getJSONFromComaArray(params['body']));
+      
+      if(params['type'] == 'tarea') {
+        // this.form.controls['body'].setValue(this.getJSONFromComaArray(params['body']));
+        this.form.controls['body'].setValue(JSON.stringify(params['body']));
+      } else if(params['type'] == 'microservice') {
+        // microservice is already == ''
+      }
+      this.setValidators(params['type']);
+
       this.form.controls['uri'].setValue(params['uri']);
-    })
+    });
+  }
+
+  
+  private setValidators(type: string) {
+    const bodyControl = this.form.get('body');
+    if(type == 'tarea'){
+      bodyControl.setValidators([Validators.required]);
+    } else if(type == 'microservicio') {
+      bodyControl.patchValue('');
+      bodyControl.clearValidators();
+    }
+    bodyControl.updateValueAndValidity();
   }
 
   private getJSONFromComaArray(string: string) {
@@ -55,15 +75,16 @@ export class EditServiceComponent implements OnInit {
     result += ']';
     return result;
   }
+
   submit() {
-    const val = this.form.value;
+    const val = this.form.controls;
     const service: Service = {
-      name: val.name,
-      uri: val.uri,
-      type: val.type,
-      inputType: val.inputType,
-      outputType: val.outputType,
-      body: JSON.parse(val.body),
+      name: val['name'].value,
+      uri: val['uri'].value,
+      type: val['type'].value,
+      inputType: val['inputType'].value,
+      outputType: val['outputType'].value,
+      body: (val['body'].value && val['body'].value != '') ? JSON.parse(val['body'].value) : '',
     }
 
     this.servicesService.updateService(this.serviceName,service)
@@ -81,5 +102,13 @@ export class EditServiceComponent implements OnInit {
 
   openSnackBar(msg: string) {
     this.snackBar.open(msg, 'Cerrar', {duration: 3000});
+  }
+
+  get serviceType(): string {
+    return this.form.controls['type'].value;
+  }
+  
+  get serviceListTab() {
+    return this.form.get('type').value == 'tarea' ? 0 : 1;
   }
 }
